@@ -1,0 +1,27 @@
+groups:
+- name: Alertas Servidores Linux
+  rules:
+  - alert: Servico NodeExporter
+    expr: up{job="node_exporter"} == 0
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      title: Node {{ $labels.instance }} is down
+      description: Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 3 minutes. Node seems down.
+
+
+  - alert: CPU_ALTA
+    expr: node_load1 > 0.5
+    annotations:
+      description: '{{ $labels.instance }} of job {{ $labels.job }} is under high
+        load.'
+      summary: Instance {{ $labels.instance }} under high load
+
+  # disk space alert (with resource=<instance>:<mountpoint> event=disk_space
+  - alert: disk_space
+    expr: (node_filesystem_size_bytes - node_filesystem_free_bytes) * 100 / node_filesystem_size_bytes > 5
+    labels:
+      instance: '{{ $labels.instance }}:{{ $labels.mountpoint }}'
+    annotations:
+      value: '{{ humanize $value }}%'

@@ -1,0 +1,13 @@
+route:
+  group_by: [Alertname]
+  receiver: email-me
+
+receivers:
+- name: email-me
+  email_configs:
+  - to: leandrojpg@gmail.com
+    from: leandrojpg@gmail.com
+    smarthost: smtp.gmail.com:587
+    auth_username: leandrojpg
+    auth_identity: leandrojpg@gmail.com
+    auth_password: REDHAT.102010

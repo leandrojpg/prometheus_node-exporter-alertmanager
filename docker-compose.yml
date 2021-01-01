@@ -1,0 +1,54 @@
+version: '2'
+services:
+  prometheus:
+     image: prom/prometheus:latest
+     volumes:
+       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+       - ./prometheus_db:/var/lib/prometheus
+       - ./alert.rules:/etc/prometheus/alert.rules
+
+     command:
+       - '--config.file=/etc/prometheus/prometheus.yml'
+       - '--web.enable-lifecycle'
+     ports:
+       - '9090:9090'
+
+
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+    - '9093:9093'
+    volumes:
+    - './alertmanager/:/etc/alertmanager/'
+    restart: always
+    command:
+    - '--config.file=/etc/alertmanager/config.yml'
+    - '--storage.path=/alertmanager'
+
+
+  node-exporter:
+    pid: "host"
+    volumes:
+    - /:/host:ro,rslave
+    command:
+    - '--path.rootfs=/host'  
+    image: prom/node-exporter
+    ports:
+       - '9100:9100'
+
+#  promdash:
+#    image: prom/promdash
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - DATABASE_URL=sqlite3:/var/prometheus/file.sqlite3
+#    volumes:
+#      - "/var/prometheus:/var/prometheus"
+#      - /tmp/prom:/tmp/prom
+#
+#    command:
+#    - './bin/rake db:migrate'
+#     
+#    links:
+#      - prometheus
+#      - node-exporter
