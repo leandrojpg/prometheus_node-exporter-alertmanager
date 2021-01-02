@@ -20,7 +20,7 @@ groups:
 
   # disk space alert (with resource=<instance>:<mountpoint> event=disk_space
   - alert: ESPACO EM DISCO
-    expr: (node_filesystem_size_bytes - node_filesystem_free_bytes) * 100 / node_filesystem_size_bytes > 5
+    expr: (node_filesystem_size_bytes - node_filesystem_free_bytes) * 100 / node_filesystem_size_bytes > 85
     for: 30s
     labels:
       instance: '{{ $labels.instance }}:{{ $labels.mountpoint }}'
