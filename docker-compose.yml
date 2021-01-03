@@ -45,7 +45,7 @@ services:
       - ./data/grafana:/var/lib/grafana
       - ./grafana.ini:/etc/grafana/grafana.ini
     ports:
-      - "9082:3000"
+      - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=102010
       - GF_USERS_ALLOW_SIGN_UP=false
@@ -56,11 +56,11 @@ services:
       - GF_SMTP_PASSWORD=mypassword
       - GF_SMTP_FROM_ADDRESS=myaddress@gmail.com
       - GF_RENDERING_SERVER_URL=http://renderer:8081/render
-      - GF_RENDERING_CALLBACK_URL=http://grafana:9082/
+      - GF_RENDERING_CALLBACK_URL=http://grafana:3000/
       - GF_LOG_FILTERS=rendering:debug 
       - GF_RENDERER_PLUGIN_TZ=America/Sao_Paulo
   renderer:
-    image: grafana/grafana-image-renderer:latest
+    image: grafana/grafana-image-renderer:2.0.0
     ports:
       - 8081
     environment:
