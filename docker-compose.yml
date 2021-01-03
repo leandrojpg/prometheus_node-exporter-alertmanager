@@ -43,14 +43,25 @@ services:
       - prometheus:prometheus
     volumes:
       - ./data/grafana:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
+    ports:
+      - "9082:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=102010
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SERVER_DOMAIN=myrul.com
+      - GF_SERVER_DOMAIN=192.168.1.22
       - GF_SMTP_ENABLED=true
       - GF_SMTP_HOST=smtp.gmail.com:587
       - GF_SMTP_USER=myadrress@gmail.com
       - GF_SMTP_PASSWORD=mypassword
       - GF_SMTP_FROM_ADDRESS=myaddress@gmail.com
+      - GF_RENDERING_SERVER_URL=http://renderer:8081/render
+      - GF_RENDERING_CALLBACK_URL=http://grafana:9082/
+      - GF_LOG_FILTERS=rendering:debug 
+      - GF_RENDERER_PLUGIN_TZ=America/Sao_Paulo
+  renderer:
+    image: grafana/grafana-image-renderer:latest
     ports:
-      - "9082:3000"
+      - 8081
+    environment:
+      ENABLE_METRICS: 'true'
