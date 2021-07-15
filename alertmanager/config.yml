@@ -5,9 +5,9 @@ route:
 receivers:
 - name: email-me
   email_configs:
-  - to: leandrojpg@gmail.com
-    from: leandrojpg@gmail.com
+  - to: seuemail@gmail.com
+    from: seuemailg@gmail.com
     smarthost: smtp.gmail.com:587
-    auth_username: leandrojpg
-    auth_identity: leandrojpg@gmail.com
-    auth_password: REDHAT.102010
+    auth_username: seusuario
+    auth_identity: seusuario@gmail.com
+    auth_password: senhadoemail
